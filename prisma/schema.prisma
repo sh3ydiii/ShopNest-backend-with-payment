@@ -1,0 +1,176 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  //output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id        Int         @id @default(autoincrement())
+  phone     String      @unique
+  password  String
+  name      String
+  role      Role        @default(USER)
+  lvl       Int         @default(0)
+  xp        Int         @default(0)
+  addedAt   DateTime    @default(now())
+  dob       DateTime?   @db.Date
+  sity      String
+  totalSpent String @default("0")
+  rate      Rate[]
+  cart      CartItem[]
+  orders    Order[]
+}
+
+model Product {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  brand       String
+  type        String
+
+  colors      String[]   
+  sizes       Int[] 
+  
+  categories  Categories? @relation(fields: [categoriesId], references: [id])
+  categoriesId Int?
+
+  rates       Rate[]
+  cart        CartItem[]
+  orderItems  OrderItem[]
+
+  imageUrl    String?
+
+  isExclusive Boolean @default(false)
+}
+
+model Categories {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  products Product[]
+}
+
+model Rate {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int
+  value     Int
+  comment   String?
+  addedAt   DateTime @default(now())
+}
+
+model CartItem {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int
+  quantity  Int
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+}
+
+model Order {
+  id           Int         @id @default(autoincrement())
+  orderId      String      @unique
+  user         User        @relation(fields: [userId], references: [id])
+  userId       Int
+  sumProducts  Int         @default(0)
+  status       Status
+  addedAt      DateTime    @default(now())
+  updateAt     DateTime    @updatedAt
+  items        OrderItem[]
+
+  address      String  
+}
+
+model OrderItem {
+  id              Int      @id @default(autoincrement())
+  order           Order    @relation(fields: [orderId], references: [id])
+  orderId         Int
+  product         Product  @relation(fields: [productId], references: [id])
+  productId       Int
+  quantity        Int
+  priceAtPurchase Float
+}
+
+model RefreshToken {
+  id        Int       @id @default(autoincrement())
+  token     String   @unique
+  userId Int
+}
+
+model Feedback {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  message   String  
+  email     String
+  status    FeedbackStatus @default(NEW)
+  createdAt DateTime   @default(now())
+}
+
+model Case {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  level       CaseLevel
+  price       Float      @default(0) // если кейс можно купить
+  requiredSum Float      @default(0) // сколько нужно потратить, чтобы получить доступ
+  createdAt   DateTime   @default(now())
+  items       CaseItem[]
+}
+
+model CaseItem {
+  id        Int        @id @default(autoincrement())
+  case      Case       @relation(fields: [caseId], references: [id])
+  caseId    Int
+  type      RewardType
+  title     String     // Название подарка (например, "Купон на скидку 10%")
+  image     String?    // Картинка награды
+  weight    Int        // Шанс выпадения
+  value     String?    // Например: промокод или внутренний id эксклюзива
+}
+
+enum RewardType {
+  PRODUCT
+  COUPON
+  ACCESSORY
+  EXCLUSIVE
+}
+
+enum CaseLevel {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+enum FeedbackStatus {
+  NEW
+  IN_PROGRESS
+  RESOLVED
+}
+
+enum Status {
+  CANCELED
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+}
