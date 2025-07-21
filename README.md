@@ -19,7 +19,14 @@
 Проект построен с использованием NestJS и Prisma ORM, с прицелом на высокую производительность, безопасность и удобство масштабирования.
 
 ## 🚀 Технологии
-
+![Node.js](https://img.shields.io/badge/Node.js-18.x-green)
+![NestJS](https://img.shields.io/badge/NestJS-%E2%9D%A4-red)
+![Docker](https://img.shields.io/badge/Docker-ready-blue)
+![NestJS](https://img.shields.io/badge/Docker-ready-blue)
+![Prisma](https://img.shields.io/badge/Prisma-ORM-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-%23316192?style=flat&logo=postgresql&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-Auth-blueviolet)
+![ЮKassa](https://img.shields.io/badge/ЮKassa-Payments-009FE3)
 - **NestJS** – прогрессивный Node.js фреймворк для построения масштабируемых приложений
 - **Prisma ORM** – быстрая и безопасная работа с базой данных PostgreSQL
 - **Swagger** – автоматическая генерация документации для всех endpoint'ов
