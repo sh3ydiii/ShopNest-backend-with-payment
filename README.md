@@ -88,7 +88,6 @@ If you have any questions or suggestions — feel free to reach out on Telegram:
 ![Node.js](https://img.shields.io/badge/Node.js-18.x-green)
 ![NestJS](https://img.shields.io/badge/NestJS-%E2%9D%A4-red)
 ![Docker](https://img.shields.io/badge/Docker-ready-blue)
-![NestJS](https://img.shields.io/badge/Docker-ready-blue)
 ![Prisma](https://img.shields.io/badge/Prisma-ORM-blue)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-%23316192?style=flat&logo=postgresql&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-Auth-blueviolet)
